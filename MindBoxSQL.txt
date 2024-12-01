@@ -1,0 +1,40 @@
+CREATE DATABASE MindBox;
+GO
+USE Mindbox;
+
+CREATE TABLE Products(
+ID int IDENTITY(1,1)
+, Name NVARCHAR(1000) not null
+, CONSTRAINT PK_PRODUCTS PRIMARY KEY NONCLUSTERED(ID)
+)
+
+CREATE TABLE Categories(
+ID int IDENTITY(1,1)
+, Name NVARCHAR(1000) not null
+, CONSTRAINT PK_CATEGORIES PRIMARY KEY NONCLUSTERED(ID)
+)
+
+CREATE TABLE ProductCategories(
+ProductID INT
+, CategoryID INT
+, CONSTRAINT FK_ID_PRODUCTS FOREIGN KEY (ProductID) REFERENCES Products(ID)
+, CONSTRAINT FK_ID_CATEGORIES FOREIGN KEY (CategoryID) REFERENCES Categories(ID)
+)
+
+INSERT INTO Products(Name) VALUES
+('Хлеб белый'), ('Лимонад виноградный'), ('Молоко'), ('Квас')
+
+INSERT INTO Categories(Name) VALUES('Бакалея'), ('Напитки')
+
+INSERT INTO ProductCategories VALUES
+(1, 1)
+, (2, 2)
+, (4, 1)
+, (4, 2)
+
+
+SELECT p.Name, c.Name
+  FROM [MindBox].[dbo].[Products] AS p
+LEFT JOIN ProductCategories AS pc ON  p.ID = pc.ProductID
+LEFT JOIN Categories AS c ON pc.CategoryID = c.ID
+
